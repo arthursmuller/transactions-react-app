@@ -1,32 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './App.css';
-
-const API_URL = 'http://localhost:3001';
-const transactionsEndpint = 'transactions';
-
-export async function listTransactions() {
-  const response = await fetch(`${API_URL}/${transactionsEndpint}`);
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  const data = await response.json();
-  return data;
-}
-
-export async function createTransaction(data) {
-  const res = await fetch(`${API_URL}/transactions`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => {});
-    throw new Error(err.error || 'Failed to create transaction');
-  }
-
-  return await res.json();
-}
+import { listTransactions, createTransaction } from './api';
 
 function App() {
   const [amount, setAmount] = useState('');
@@ -71,7 +44,6 @@ function App() {
       await fetchTransactions();
       setSubmitting(false)
     } catch (error) {
-      console.log("asdadsadsadsa")
       setError('Failed to save the transaction.');
     }
   };
@@ -117,7 +89,7 @@ function App() {
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
       <div >
-        <h2>Transactions</h2>
+        <h2>Transactinos</h2>
         {transactions.length > 0 ? (
           <ul>
             {transactions.map((t, index) => (
